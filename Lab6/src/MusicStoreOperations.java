@@ -55,7 +55,10 @@ public class MusicStoreOperations {
 
         try (Connection connection = DataBaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            setPreparedStatementParameters(preparedStatement, name, duration, albumId);
+
+            preparedStatement.setString(1, name);
+            preparedStatement.setInt(2, duration);
+            preparedStatement.setInt(3, albumId);
 
             int rows = preparedStatement.executeUpdate();
             if (rows > 0) {
@@ -66,7 +69,7 @@ public class MusicStoreOperations {
                     }
                 }
             }
-            return "Не удалось добавить композицию.";
+            return "Не удалось добавить композицию";
         } catch (SQLException e) {
             return "Ошибка при добавлении: " + e.getMessage();
         }
@@ -74,24 +77,21 @@ public class MusicStoreOperations {
 
     public String updateCompositionDuration(int compositionId, int newDuration) {
         String query = "UPDATE composition SET duration = ? WHERE composition_id = ?";
-
         int rows = executeUpdateQuery(query, newDuration, compositionId);
 
         return formatModificationResult(rows,
                 "Длительность композиции с ID %d успешно изменена на %d мин.",
                 "Композиция с ID %d не найдена.",
                 compositionId, newDuration);
-
     }
 
     public String deleteComposition(int compositionId) {
         String query = "DELETE FROM composition WHERE composition_id = ?";
-
         int rows = executeUpdateQuery(query, compositionId);
 
         return formatModificationResult(rows,
-                "Композиция с ID %d успешно удалена.",
-                "Композиция с ID %d не найдена.",
+                "Композиция с ID %d успешно удалена",
+                "Композиция с ID %d не найдена",
                 compositionId);
     }
 
@@ -99,18 +99,15 @@ public class MusicStoreOperations {
         return getLastIdFromTable("composition", "composition_id");
     }
 
-    private void setPreparedStatementParameters(PreparedStatement preparedStatement, Object... params) throws SQLException {
-        for (int i = 0; i < params.length; i++) {
-            preparedStatement.setObject(i + 1, params[i]);
-        }
-    }
-
     private int executeUpdateQuery(String sql, Object... params) {
         try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            setPreparedStatementParameters(pstmt, params);
+            for (int i = 0; i < params.length; i++) {
+                pstmt.setObject(i + 1, params[i]);
+            }
             return pstmt.executeUpdate();
+
         } catch (SQLException e) {
             System.err.println("Ошибка при выполнении запроса: " + e.getMessage());
             return 0;
@@ -152,5 +149,4 @@ public class MusicStoreOperations {
         }
         return -1;
     }
-
 }
