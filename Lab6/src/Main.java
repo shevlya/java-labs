@@ -1,15 +1,43 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        MusicStoreOperations musicStoreOperations = new MusicStoreOperations();
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        System.out.println("Вывод названия альбома и самой короткой композиции среди всех \n" +
+                "композиций для этого альбома, исключая композиции, для которых данное число менее 5");
+        List<String> albums = musicStoreOperations.getAlbumsAndShortestTracks();
+        if (albums.isEmpty()) {
+            System.out.println("Такие альбомы не найдены");
+        } else {
+            for (String album : albums) {
+                System.out.println(" " + album);
+            }
+        }
+
+        System.out.println();
+        System.out.println("CRUD-операции для таблицы Композиций");
+
+        System.out.println("До операций таблица Композиций");
+        for (String composition : musicStoreOperations.getAllCompositions()) {
+            System.out.println(" " + composition);
+        }
+        System.out.println();
+
+        System.out.println(musicStoreOperations.addComposition("Tests", 10, 1));
+
+        int newCompositionId = musicStoreOperations.getLastCompositionId();
+
+        if (newCompositionId > 0) {
+            System.out.println(musicStoreOperations.updateCompositionDuration(newCompositionId, 6));
+            System.out.println(musicStoreOperations.deleteComposition(newCompositionId));
+        } else {
+            System.out.println("Ошибка получения ID новой композиции");
+        }
+
+        System.out.println("После операций таблица Композиций");
+        for (String composition : musicStoreOperations.getAllCompositions()) {
+            System.out.println(" " + composition);
         }
     }
 }
