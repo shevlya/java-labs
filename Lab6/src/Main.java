@@ -1,43 +1,44 @@
 import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) {
         MusicStoreOperations musicStoreOperations = new MusicStoreOperations();
 
-        System.out.println("Вывод названия альбома и самой короткой композиции среди всех \n" +
-                "композиций для этого альбома, исключая композиции, для которых данное число менее 5");
-        List<String> albums = musicStoreOperations.getAlbumsAndShortestTracks();
-        if (albums.isEmpty()) {
-            System.out.println("Такие альбомы не найдены");
-        } else {
-            for (String album : albums) {
-                System.out.println(" " + album);
-            }
-        }
-
-        System.out.println();
-        System.out.println("CRUD-операции для таблицы Композиций");
-
-        System.out.println("До операций таблица Композиций");
+        System.out.println("Список композиций до операций:");
         for (String composition : musicStoreOperations.getAllCompositions()) {
             System.out.println(" " + composition);
         }
         System.out.println();
 
-        System.out.println(musicStoreOperations.addComposition("Tests", 10, 1));
+        System.out.println("Добавление композиции " + musicStoreOperations.addComposition("Test", 10, 1));
 
         int newCompositionId = musicStoreOperations.getLastCompositionId();
 
-        if (newCompositionId > 0) {
-            System.out.println(musicStoreOperations.updateCompositionDuration(newCompositionId, 6));
-            System.out.println(musicStoreOperations.deleteComposition(newCompositionId));
-        } else {
-            System.out.println("Ошибка получения ID новой композиции");
-        }
+        printCompositions(musicStoreOperations);
 
-        System.out.println("После операций таблица Композиций");
+        System.out.println("Изменение длительности композиции " + musicStoreOperations.updateCompositionDuration(newCompositionId, 6));
+        printCompositions(musicStoreOperations);
+
+
+        System.out.println("Удаление композиции " + musicStoreOperations.deleteComposition(newCompositionId));
+        printCompositions(musicStoreOperations);
+
+        System.out.println("Получить альбомы с самыми короткими композициями в них, " +
+                "исключая альбомы, где минимальная длительность менее 5: ");
+
+        List<String> albums = musicStoreOperations.getAlbumsAndShortestTracks();
+        for (String album : albums) {
+            System.out.println(" " + album);
+        }
+        System.out.println();
+    }
+
+    private static void printCompositions(MusicStoreOperations musicStoreOperations) {
+        System.out.println("Список композиций:");
         for (String composition : musicStoreOperations.getAllCompositions()) {
             System.out.println(" " + composition);
         }
+        System.out.println();
     }
 }

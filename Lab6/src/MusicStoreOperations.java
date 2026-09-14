@@ -14,14 +14,12 @@ public class MusicStoreOperations {
                 HAVING MIN(c.duration) >= 5
                 """;
 
-        try (Connection conn = DataBaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+        try (Connection connection = DataBaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
 
-            while (rs.next()) {
-                resultList.add(String.format("Альбом: %-25s | Мин. длительность: %d мин.",
-                        rs.getString("album_name"),
-                        rs.getInt("min_duration")));
+            while (resultSet.next()) {
+                resultList.add(formatAlbumRow(resultSet));
             }
         } catch (SQLException e) {
             System.err.println("Ошибка при выполнении SELECT запроса: " + e.getMessage());
@@ -39,16 +37,12 @@ public class MusicStoreOperations {
                 ORDER BY a.album_name, c.composition_id
                 """;
 
-        try (Connection conn = DataBaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+        try (Connection connection = DataBaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
 
-            while (rs.next()) {
-                resultList.add(String.format("ID: %-3d | Композиция: %-30s | Альбом: %-25s | Длительность: %d мин.",
-                        rs.getInt("composition_id"),
-                        rs.getString("composition_name"),
-                        rs.getString("album_name"),
-                        rs.getInt("duration")));
+            while (resultSet.next()) {
+                resultList.add(formatCompositionRow(resultSet));
             }
         } catch (SQLException e) {
             System.err.println("Ошибка при получении списка композиций: " + e.getMessage());
@@ -56,24 +50,19 @@ public class MusicStoreOperations {
         return resultList;
     }
 
-    /**
-     * Добавление композиции. Возвращает строку с результатом.
-     */
     public String addComposition(String name, int duration, int albumId) {
         String query = "INSERT INTO composition (composition_name, duration, album_id) VALUES (?, ?, ?)";
 
-        try (Connection conn = DataBaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            pstmt.setString(1, name);
-            pstmt.setInt(2, duration);
-            pstmt.setInt(3, albumId);
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            setPreparedStatementParameters(preparedStatement, name, duration, albumId);
 
-            int rows = pstmt.executeUpdate();
+            int rows = preparedStatement.executeUpdate();
             if (rows > 0) {
-                try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        int newId = rs.getInt(1);
-                        return "Композиция '" + name + "' успешно добавлена с ID: " + newId;
+                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                    if (resultSet.next()) {
+                        int newId = resultSet.getInt(1);
+                        return String.format("Композиция '%s' успешно добавлена с ID: %d", name, newId);
                     }
                 }
             }
@@ -83,56 +72,75 @@ public class MusicStoreOperations {
         }
     }
 
-    /**
-     * Обновление длительности. Возвращает строку с результатом.
-     */
     public String updateCompositionDuration(int compositionId, int newDuration) {
         String query = "UPDATE composition SET duration = ? WHERE composition_id = ?";
 
-        try (Connection conn = DataBaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
+        int rows = executeUpdateQuery(query, newDuration, compositionId);
 
-            pstmt.setInt(1, newDuration);
-            pstmt.setInt(2, compositionId);
+        return formatModificationResult(rows,
+                "Длительность композиции с ID %d успешно изменена на %d мин.",
+                "Композиция с ID %d не найдена.",
+                compositionId, newDuration);
 
-            int rows = pstmt.executeUpdate();
-            if (rows > 0) {
-                return "Длительность композиции с ID " + compositionId + " успешно изменена на " + newDuration + " мин.";
-            } else {
-                return "Композиция с ID " + compositionId + " не найдена.";
-            }
-        } catch (SQLException e) {
-            return "Ошибка при обновлении: " + e.getMessage();
-        }
     }
 
-    /**
-     * Удаление композиции. Возвращает строку с результатом.
-     */
     public String deleteComposition(int compositionId) {
         String query = "DELETE FROM composition WHERE composition_id = ?";
 
-        try (Connection conn = DataBaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
+        int rows = executeUpdateQuery(query, compositionId);
 
-            pstmt.setInt(1, compositionId);
+        return formatModificationResult(rows,
+                "Композиция с ID %d успешно удалена.",
+                "Композиция с ID %d не найдена.",
+                compositionId);
+    }
 
-            int rows = pstmt.executeUpdate();
-            if (rows > 0) {
-                return "Композиция с ID " + compositionId + " успешно удалена.";
-            } else {
-                return "Композиция с ID " + compositionId + " не найдена.";
-            }
-        } catch (SQLException e) {
-            return "Ошибка при удалении: " + e.getMessage();
+    public int getLastCompositionId() {
+        return getLastIdFromTable("composition", "composition_id");
+    }
+
+    private void setPreparedStatementParameters(PreparedStatement preparedStatement, Object... params) throws SQLException {
+        for (int i = 0; i < params.length; i++) {
+            preparedStatement.setObject(i + 1, params[i]);
         }
     }
 
-    /**
-     * Вспомогательный метод для получения ID последней добавленной записи.
-     */
-    public int getLastCompositionId() {
-        String query = "SELECT MAX(composition_id) FROM composition";
+    private int executeUpdateQuery(String sql, Object... params) {
+        try (Connection conn = DataBaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            setPreparedStatementParameters(pstmt, params);
+            return pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Ошибка при выполнении запроса: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    private String formatModificationResult(int rows, String successTemplate, String notFoundTemplate, Object... args) {
+        if (rows > 0) {
+            return String.format(successTemplate, args);
+        } else {
+            return String.format(notFoundTemplate, args);
+        }
+    }
+
+    private String formatAlbumRow(ResultSet rs) throws SQLException {
+        return String.format("Альбом: %-25s | Мин. длительность: %d мин.",
+                rs.getString("album_name"),
+                rs.getInt("min_duration"));
+    }
+
+    private String formatCompositionRow(ResultSet rs) throws SQLException {
+        return String.format("ID: %-3d | Композиция: %-30s | Альбом: %-25s | Длительность: %d мин.",
+                rs.getInt("composition_id"),
+                rs.getString("composition_name"),
+                rs.getString("album_name"),
+                rs.getInt("duration"));
+    }
+
+    private int getLastIdFromTable(String tableName, String idColumn) {
+        String query = String.format("SELECT MAX(%s) FROM %s", idColumn, tableName);
         try (Connection conn = DataBaseConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
@@ -144,4 +152,5 @@ public class MusicStoreOperations {
         }
         return -1;
     }
+
 }
