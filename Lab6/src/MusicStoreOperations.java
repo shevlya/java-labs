@@ -7,9 +7,7 @@ public class MusicStoreOperations {
     public List<String> getAlbumsAndShortestTracks() throws SQLException {
         List<String> result = new ArrayList<>();
         String query = """
-                SELECT a.album_name,
-                       c.composition_name,
-                       c.duration
+                SELECT a.album_name, c.composition_name, c.duration
                 FROM (
                     SELECT album_id, MIN(duration) AS min_duration
                     FROM composition
@@ -34,10 +32,7 @@ public class MusicStoreOperations {
     public List<String> getAllCompositions() throws SQLException {
         List<String> result = new ArrayList<>();
         String query = """
-                SELECT c.composition_id,
-                       c.composition_name,
-                       c.duration,
-                       a.album_name
+                SELECT c.composition_id, c.composition_name, c.duration, a.album_name
                 FROM composition c
                 JOIN album a ON c.album_id = a.album_id
                 ORDER BY a.album_name, c.composition_id
