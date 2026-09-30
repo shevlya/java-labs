@@ -14,11 +14,11 @@ INSERT INTO album (album_id, album_name, genre, artist_id) VALUES
     (nextval('id_album_seq'),'Sonatas and Partitas', 'Baroque', 2);
 
 INSERT INTO composition (composition_id, composition_name, duration, album_id) VALUES
-    (nextval('id_composition_seq'),'Overture in E# major', 6, 1),
-    (nextval('id_composition_seq'),'Air in A minor', 5, 1),
-    (nextval('id_composition_seq'),'Concerto 1 in F major', 4, 2),
-    (nextval('id_composition_seq'),'Concerto 2 in F major', 6, 2),
+    (nextval('id_composition_seq'),'Overture in E# dur', 6, 1),
+    (nextval('id_composition_seq'),'Air in A moll', 5, 1),
+    (nextval('id_composition_seq'),'Concerto 1 in F dur', 4, 2),
+    (nextval('id_composition_seq'),'Concerto 2 in F dur', 6, 2),
     (nextval('id_composition_seq'),'Andante', 4, 3),
     (nextval('id_composition_seq'),'Allegro', 6, 4),
     (nextval('id_composition_seq'),'Spring', 10, 5),
-    (nextval('id_composition_seq'),'Fugue in G minor', 6, 6);
+    (nextval('id_composition_seq'),'Fugue in G moll', 6, 6);

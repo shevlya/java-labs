@@ -7,13 +7,18 @@ import java.util.Properties;
 
 public class DataBaseConnection {
 
-    public static Connection getConnection() throws SQLException {
-        Properties props = new Properties();
+    private static final String URL;
+    private static final String USERNAME;
+    private static final String PASSWORD;
 
+    static {
+        Properties props = new Properties();
         try (FileInputStream in = new FileInputStream("database.properties")) {
             props.load(in);
         } catch (IOException e) {
-            throw new SQLException("Не удалось загрузить файл database.properties", e);
+            throw new ExceptionInInitializerError(
+                    new RuntimeException("Не удалось загрузить файл database.properties", e)
+            );
         }
 
         String drivers = props.getProperty("jdbc.drivers");
@@ -24,13 +29,17 @@ public class DataBaseConnection {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            throw new SQLException("Драйвер PostgreSQL не найден", e);
+            throw new ExceptionInInitializerError(
+                    new RuntimeException("Драйвер PostgreSQL не найден", e)
+            );
         }
 
-        String url = props.getProperty("jdbc.url");
-        String username = props.getProperty("jdbc.username");
-        String password = props.getProperty("jdbc.password");
+        URL = props.getProperty("jdbc.url");
+        USERNAME = props.getProperty("jdbc.username");
+        PASSWORD = props.getProperty("jdbc.password");
+    }
 
-        return DriverManager.getConnection(url, username, password);
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 }
