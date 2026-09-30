@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MusicStoreOperations {
 
-    public List<String> getAlbumsAndShortestTracks() {
+    public List<String> getAlbumsAndShortestTracks() throws SQLException {
         List<String> result = new ArrayList<>();
         String query = """
                 SELECT a.album_name,
@@ -27,13 +27,11 @@ public class MusicStoreOperations {
             while (resultSet.next()) {
                 result.add(formatShortestCompositionRow(resultSet));
             }
-        } catch (SQLException e) {
-            System.err.println("Ошибка при выполнении запроса: " + e.getMessage());
         }
         return result;
     }
 
-    public List<String> getAllCompositions() {
+    public List<String> getAllCompositions() throws SQLException {
         List<String> result = new ArrayList<>();
         String query = """
                 SELECT c.composition_id,
@@ -50,13 +48,11 @@ public class MusicStoreOperations {
             while (resultSet.next()) {
                 result.add(formatCompositionRow(resultSet));
             }
-        } catch (SQLException e) {
-            System.err.println("Ошибка при получении списка композиций: " + e.getMessage());
         }
         return result;
     }
 
-    public int addComposition(String name, int duration, int albumId) {
+    public int addComposition(String name, int duration, int albumId) throws SQLException {
         String query = "INSERT INTO composition (composition_name, duration, album_id) VALUES (?, ?, ?)" ;
         try (Connection connection = DataBaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -73,32 +69,25 @@ public class MusicStoreOperations {
                 }
                 throw new SQLException("Не удалось получить ID добавленной композиции");
             }
-        } catch (SQLException e) {
-            System.err.println("Ошибка при добавлении композиции: " + e.getMessage());
-            return -1;
         }
     }
 
-    public void updateCompositionDuration(int compositionId, int newDuration) {
+    public void updateCompositionDuration(int compositionId, int newDuration) throws SQLException {
         String query = "UPDATE composition SET duration = ? WHERE composition_id = ?" ;
         try (Connection connection = DataBaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, newDuration);
             statement.setInt(2, compositionId);
             statement.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Ошибка при изменении композиции: " + e.getMessage());
         }
     }
 
-    public void deleteComposition(int compositionId) {
+    public void deleteComposition(int compositionId) throws SQLException {
         String query = "DELETE FROM composition WHERE composition_id = ?" ;
         try (Connection connection = DataBaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, compositionId);
             statement.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Ошибка при удалении композиции: " + e.getMessage());
         }
     }
 
