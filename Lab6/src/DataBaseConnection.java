@@ -34,4 +34,3 @@ public class DataBaseConnection {
         return DriverManager.getConnection(url, username, password);
     }
 }
-

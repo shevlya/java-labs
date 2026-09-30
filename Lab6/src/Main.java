@@ -7,18 +7,20 @@ public class Main {
 
         printCompositions(musicStoreOperations);
 
-        System.out.println("Добавление композиции " + musicStoreOperations.addComposition("Test", 10, 1));
-        int newCompositionId = musicStoreOperations.getLastCompositionId();
+        int newCompositionId = musicStoreOperations.addComposition("Test", 10, 1);
+        System.out.println("Добавление композиции, ID: " + newCompositionId);
         printCompositions(musicStoreOperations);
 
-        System.out.println(musicStoreOperations.updateCompositionDuration(newCompositionId, 6));
+        musicStoreOperations.updateCompositionDuration(newCompositionId, 6);
+        System.out.println("Изменение длительности композиции");
         printCompositions(musicStoreOperations);
 
-        System.out.println(musicStoreOperations.deleteComposition(newCompositionId));
+        musicStoreOperations.deleteComposition(newCompositionId);
+        System.out.println("Удаление композиции");
         printCompositions(musicStoreOperations);
 
-        System.out.println("Получить альбомы с самыми короткими композициями в них, " +
-                "исключая альбомы, где минимальная длительность менее 5: ");
+        System.out.println("Название альбома и самая короткая композиция среди всех композиций " +
+                "для этого альбома, исключая альбомы, где минимальная длительность менее 5:");
 
         List<String> albums = musicStoreOperations.getAlbumsAndShortestTracks();
         for (String album : albums) {
@@ -35,4 +37,3 @@ public class Main {
         System.out.println();
     }
 }
-
