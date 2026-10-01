@@ -26,14 +26,6 @@ public class DataBaseConnection {
             System.setProperty("jdbc.drivers", drivers);
         }
 
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new ExceptionInInitializerError(
-                    new RuntimeException("Драйвер PostgreSQL не найден", e)
-            );
-        }
-
         URL = props.getProperty("jdbc.url");
         USERNAME = props.getProperty("jdbc.username");
         PASSWORD = props.getProperty("jdbc.password");
