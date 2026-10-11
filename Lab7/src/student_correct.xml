@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><student lastname="Конева">
+    <subject mark="4" title="Немецкий язык"/>
+    <subject mark="4" title="Обществознание"/>
+    <subject mark="5" title="Литература"/>
+    <average>4.3</average>
+</student>
