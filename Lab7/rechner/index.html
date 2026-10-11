@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <script src="script.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>Калькулятор</h1>
+    <p class="description">Введите значения аргументов, выберите операцию и нажмите "Вычислить"</p>
+
+    <form name="calcForm" onsubmit="return calculate(event)">
+        <div class="input-group">
+            <label for="value1">Значение аргумента 1:</label>
+            <input type="text" id="value1" name="value1" placeholder="Например: 18"
+                   title="Введите первое число (целое или дробное)"
+                   oninput="restrictInput(this)">
+            <small class="hint">NB: можно использовать дробные числа через точку (напр: 4.5)</small>
+        </div>
+
+        <div class="operations-group">
+            <label class="radio-label"><input type="radio" name="operation" value="+"><span>Сложение (+)</span></label>
+            <label class="radio-label"><input type="radio" name="operation" value="-"><span>Вычитание (-)</span></label>
+            <label class="radio-label"><input type="radio" name="operation" value="*"><span>Умножение (*)</span></label>
+            <label class="radio-label"><input type="radio" name="operation" value="/"><span>Деление (/)</span></label>
+        </div>
+
+        <div class="input-group">
+            <label for="value2">Значение аргумента 2:</label>
+            <input type="text" id="value2" name="value2" placeholder="Например: 0.5"
+                   title="Введите второе число (не должно быть 0 при делении)"
+                   oninput="restrictInput(this)">
+            <small class="hint">NB: при делении второй аргумент не должен равняться 0</small>
+        </div>
+
+        <input type="hidden" id="result" name="result">
+        <button type="submit" class="btn-primary">Вычислить</button>
+    </form>
+</div>
+</body>
+</html>
