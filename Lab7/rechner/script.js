@@ -1,16 +1,8 @@
 function restrictInput(inputElement) {
     let val = inputElement.value;
     val = val.replace(/[^0-9.\-]/g, '');
-    let isNegative = val.startsWith('-');
-    val = val.replace(/-/g, '');
-    if (isNegative) {
-        val = '-' + val;
-    }
-    let parts = val.split('.');
-    if (parts.length > 2) {
-        val = parts[0] + '.' + parts.slice(1).join('');
-    }
-    inputElement.value = val;
+    const match = val.match(/^-?(?:\d+\.?\d*)?/);
+    inputElement.value = match ? match[0] : '';
 }
 
 function calculate(event) {
