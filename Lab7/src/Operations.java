@@ -2,14 +2,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Path;
@@ -31,15 +34,24 @@ public class Operations {
             updateAverageNode(doc, correctAverage);
             saveDocument(doc, outPath);
             System.out.println("Файл сохранен: " + outPath.toAbsolutePath());
+        } catch (ParserConfigurationException ex) {
+            System.err.println("Ошибка конфигурации парсера: " + ex.getMessage());
+        } catch (SAXException ex) {
+            System.err.println("Ошибка валидации XML: " + ex.getMessage());
+        } catch (IOException ex) {
+            System.err.println("Ошибка ввода-вывода при чтении XML: " + ex.getMessage());
         } catch (Exception e) {
             System.err.println("Произошла ошибка при обработке XML:");
             e.printStackTrace();
         }
     }
 
-    private static Document loadDocument(Path inputPath) throws Exception {
+    private static Document loadDocument(Path inputPath) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setValidating(true);
+        factory.setAttribute("http://apache.org/xml/features/nonvalidating/load-external-dtd", true);
         DocumentBuilder builder = factory.newDocumentBuilder();
+        builder.setErrorHandler(new XmlErrorHandler());
         return builder.parse(inputPath.toFile());
     }
 
@@ -60,7 +72,7 @@ public class Operations {
             }
         }
         if (counter == 0) {
-            System.out.printf("У студента нет оценок");
+            System.out.printf("У студента нет оценок\n");
             return null;
         }
         return sum.divide(new BigDecimal(counter), 1, RoundingMode.HALF_UP);
@@ -79,7 +91,7 @@ public class Operations {
                     averageNode.setTextContent(correctAverage.toString());
                     System.out.printf("Средняя оценка скорректирована: было %s, стало %s\n", currentText, correctAverage);
                 } else {
-                    System.out.printf("Средняя оценка верна (%s), коррекция не нужна (%s)\n", currentText, currentAverage);
+                    System.out.printf("Средняя оценка верна (%s), коррекция не нужна\n", currentAverage);
                 }
             } catch (NumberFormatException e) {
                 averageNode.setTextContent(correctAverage.toString());
@@ -98,6 +110,7 @@ public class Operations {
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
         transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "student.dtd");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
         transformer.transform(new DOMSource(doc), new StreamResult(outPath.toFile()));
     }
 }
