@@ -1,10 +1,15 @@
+:root {
+    --color-bg: #f5f7fa;
+    --color-text: #333333;
+    --color-accent: #9b89b3;
+}
+
 body {
     margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-    font-family: 'Calibri', 'Segoe UI', sans-serif;
+    background: var(--color-bg);
+    font-family: sans-serif;
     font-size: 14pt;
-    color: #333;
+    color: var(--color-text);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -12,28 +17,25 @@ body {
 }
 
 .container {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 2.5rem;
+    padding: 40px;
+    border: 1px solid var(--color-accent);
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
     max-width: 500px;
     width: 90%;
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 24px;
     align-items: center;
 }
 
 h1 {
-    color: #4a4a4a;
     margin: 0;
     font-size: 18pt;
 }
 
 .description {
     margin: 0;
-    color: #666;
     font-size: 12pt;
     line-height: 1.4;
 }
@@ -42,29 +44,29 @@ h1 {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 0.5rem;
+    gap: 8px;
     text-align: left;
 }
 
 .input-group label {
     font-weight: bold;
-    color: #4a4a4a;
     font-size: 12pt;
 }
 
 input[type="text"] {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-accent);
     border-radius: 6px;
     font-size: 12pt;
     box-sizing: border-box;
-    transition: border-color 0.3s ease;
+    color: var(--color-text);
+    background: var(--color-bg);
 }
 
 input[type="text"]:focus {
     outline: none;
-    border-color: #9B89B3;
+    border-color: var(--color-text);
 }
 
 .operations-group {
@@ -72,45 +74,30 @@ input[type="text"]:focus {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1.5rem;
+    gap: 24px;
     width: 100%;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-top: 24px;
+    margin-bottom: 24px;
 }
 
 .radio-label {
-    font-size: 11pt;
-    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    color: #4a4a4a;
-    transition: color 0.2s ease;
+    cursor: pointer;
+    font-size: 11pt;
+    accent-color: var(--color-accent);
 }
 
 .radio-label:hover {
-    color: #9B89B3;
-}
-
-.radio-label input[type="radio"] {
-    accent-color: #9B89B3;
-    transform: scale(1.3);
-    margin-bottom: 2px;
-    cursor: pointer;
-}
-
-.radio-label span {
-    text-align: center;
-    line-height: 1.2;
-    font-weight: 500;
+    color: var(--color-accent);
 }
 
 .btn-primary {
-    background-color: #9B89B3;
-    color: #ffffff;
-    border: none;
-    box-shadow: none;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    border: 1px solid var(--color-accent);
     padding: 12px 32px;
     font-size: 12pt;
     font-weight: bold;
@@ -118,74 +105,54 @@ input[type="text"]:focus {
     cursor: pointer;
     width: 100%;
     max-width: 280px;
-    text-align: center;
-    transition: background-color 0.3s ease;
-    margin-top: 0.5rem;
+    margin-top: 24px;
 }
 
 .btn-primary:hover {
-    background-color: #8A78A2;
+    background-color: var(--color-bg);
+    color: var(--color-accent);
 }
 
 .result-table {
     width: 100%;
     border-collapse: collapse;
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
 }
 
 .result-table th,
 .result-table td {
     padding: 12px;
-    border: 1px solid #e0e0e0;
-    text-align: center;
+    border: 1px solid var(--color-accent);
 }
 
 .result-table th {
-    background-color: #9B89B3;
-    color: white;
-    font-weight: bold;
-}
-
-.result-table td {
-    color: #333;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
 }
 
 .user-photo {
     max-width: 200px;
     width: 100%;
     border-radius: 8px;
-    border: 3px solid #9B89B3;
+    border: 3px solid var(--color-accent);
     object-fit: cover;
 }
 
 .back-link {
-    display: inline-block;
-    color: #333;
-    text-decoration: none;
+    color: var(--color-text);
     font-weight: bold;
-    transition: color 0.3s ease;
-    padding: 8px 16px;
-    border: 1px solid #9B89B3;
-    border-radius: 6px;
 }
 
 .back-link:hover {
-    color: #ffffff;
-    background-color: #9B89B3;
-    text-decoration: none;
+    color: var(--color-accent);
 }
 
 .hint {
     font-size: 10pt;
-    color: #888888;
     margin-top: 2px;
     font-style: italic;
-    text-align: left;
 }
 
 input[type="text"]::placeholder {
-    color: #b0b0b0;
+    color: var(--color-accent);
     opacity: 1;
 }
