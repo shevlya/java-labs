@@ -49,7 +49,7 @@ public class Operations {
     private static Document loadDocument(Path inputPath) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(true);
-        factory.setAttribute("http://apache.org/xml/features/nonvalidating/load-external-dtd", true);
+        factory.setIgnoringElementContentWhitespace(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         builder.setErrorHandler(new XmlErrorHandler());
         return builder.parse(inputPath.toFile());
@@ -110,7 +110,6 @@ public class Operations {
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
         transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "student.dtd");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
         transformer.transform(new DOMSource(doc), new StreamResult(outPath.toFile()));
     }
 }

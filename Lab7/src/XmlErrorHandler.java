@@ -4,17 +4,17 @@ import org.xml.sax.SAXParseException;
 
 public class XmlErrorHandler implements ErrorHandler {
     @Override
-    public void warning(SAXParseException exception) {
-        System.err.println("Предупреждение XML: " + exception.getMessage());
-    }
-
-    @Override
     public void error(SAXParseException exception) throws SAXException {
-        throw new SAXException("Ошибка валидации XML, не соответствует DTD: " + exception.getMessage(), exception);
+        throw new SAXException("не соответствует DTD: " + exception.getMessage(), exception);
     }
 
     @Override
     public void fatalError(SAXParseException exception) throws SAXException {
-        throw new SAXException("Критическая ошибка XML: " + exception.getMessage(), exception);
+        throw new SAXException("критическая ошибка XML: " + exception.getMessage(), exception);
+    }
+
+    @Override
+    public void warning(SAXParseException exception) {
+        System.err.println("предупреждение XML: " + exception.getMessage());
     }
 }
