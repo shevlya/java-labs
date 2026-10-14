@@ -7,51 +7,44 @@ function restrictInput(inputElement) {
 
 function calculate(event) {
     event.preventDefault();
-    var val1Str = document.getElementById('value1').value.trim();
-    var val2Str = document.getElementById('value2').value.trim();
-    if (val1Str === "" || val2Str === "") {
-        alert('Поля ввода значений пусты, заполните оба поля');
-        return;
-    }
-    var radios = document.getElementsByName('operation');
-    var operation = null;
-    for (var i = 0; i < radios.length; i++) {
-        if (radios[i].checked) {
-            operation = radios[i].value;
-            break;
-        }
-    }
-    if (operation === null) {
-        alert('Операция не выбрана, выберите одну из арифметических операций');
-        return;
-    }
+    var val1Str = document.getElementById("value1").value.trim();
+    var val2Str = document.getElementById("value2").value.trim();
+    var checkedRadio = document.querySelector('input[name="operation"]:checked');
+    var operation = checkedRadio !== null ? checkedRadio.value : null;
     var value1 = parseFloat(val1Str);
     var value2 = parseFloat(val2Str);
-    var result = 0;
-    if (isNaN(value1) || isNaN(value2)) {
-        alert('Введите корректные числа');
-        return;
+
+    var errorMessage = null;
+    if (val1Str === '' || val2Str === '') {
+        errorMessage = 'Поля значений аргументов не заполнены';
+    } else if (operation === null) {
+        errorMessage = 'Операция не выбрана';
+    } else if (isNaN(value1) || isNaN(value2)) {
+        errorMessage = 'Введите корректные числа';
+    } else if (operation === '/' && value2 === 0) {
+        errorMessage = 'Деление на ноль невозможно';
     }
-    var operations = {
-        '+': function (x, y) { return x + y; },
-        '-': function (x, y) { return x - y; },
-        '*': function (x, y) { return x * y; },
-        '/': function (x, y) { return y === 0 ? NaN : x / y; }
-    };
-    if (operation === '/' && value2 === 0) {
-        alert('Деление на ноль невозможно');
-        return;
+
+    if (errorMessage !== null) {
+        alert(errorMessage);
+    } else {
+        var operations = {
+            '+': function (x, y) { return x + y; },
+            '-': function (x, y) { return x - y; },
+            '*': function (x, y) { return x * y; },
+            '/': function (x, y) { return x / y; }
+        };
+        var result = Number(operations[operation](value1, value2).toFixed(4));
+        document.getElementById("result").value = result;
+
+        var params = new URLSearchParams({
+            value1: value1,
+            value2: value2,
+            operation: operation,
+            result: result
+        });
+        window.location.href = "result.html?" + params.toString();
     }
-    result = operations[operation](value1, value2);
-    result = Math.round(result * 10000) / 10000;
-    document.getElementById("result").value = result;
-    var params = new URLSearchParams({
-        value1: value1,
-        value2: value2,
-        operation: operation,
-        result: result
-    });
-    window.location.href = "result.html?" + params.toString();
 }
 
 function getCalcInfo() {
