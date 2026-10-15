@@ -31,9 +31,13 @@ public class Operations {
                 System.out.println("Предметы не найдены, средняя оценка не может быть вычислена");
                 return;
             }
-            updateAverageNode(doc, correctAverage);
-            saveDocument(doc, outPath);
-            System.out.println("Файл сохранен: " + outPath.toAbsolutePath());
+            boolean isModified = updateAverageNode(doc, correctAverage);
+            if (isModified) {
+                saveDocument(doc, outPath);
+                System.out.println("Файл сохранен: " + outPath.toAbsolutePath());
+            } else {
+                System.out.println("В файле не было изменений, новый файл не создан");
+            }
         } catch (ParserConfigurationException ex) {
             System.err.println("Ошибка конфигурации парсера: " + ex.getMessage());
         } catch (SAXException ex) {
@@ -78,8 +82,9 @@ public class Operations {
         return sum.divide(new BigDecimal(counter), 1, RoundingMode.HALF_UP);
     }
 
-    private static void updateAverageNode(Document doc, BigDecimal correctAverage) {
+    private static boolean updateAverageNode(Document doc, BigDecimal correctAverage) {
         NodeList averages = doc.getElementsByTagName(AVERAGE);
+        boolean isModified = false;
 
         if (averages.getLength() > 0) {
             Node averageNode = averages.item(0);
@@ -90,19 +95,23 @@ public class Operations {
                 if (correctAverage.compareTo(currentAverage) != 0) {
                     averageNode.setTextContent(correctAverage.toString());
                     System.out.printf("Средняя оценка скорректирована: было %s, стало %s\n", currentText, correctAverage);
+                    isModified = true;
                 } else {
                     System.out.printf("Средняя оценка верна (%s), коррекция не нужна\n", currentAverage);
                 }
             } catch (NumberFormatException e) {
                 averageNode.setTextContent(correctAverage.toString());
                 System.out.printf("Некорректное значение среднего '%s' заменено на %s\n", currentText, correctAverage);
+                isModified = true;
             }
         } else {
             Element newAverage = doc.createElement(AVERAGE);
             newAverage.setTextContent(correctAverage.toString());
             doc.getDocumentElement().appendChild(newAverage);
             System.out.printf("Добавлен <average> со значением %s\n", correctAverage);
+            isModified = true;
         }
+        return isModified;
     }
 
     private static void saveDocument(Document doc, Path outPath) throws Exception {
