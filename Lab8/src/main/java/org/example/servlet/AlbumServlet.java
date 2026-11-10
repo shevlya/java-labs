@@ -62,7 +62,7 @@ public class AlbumServlet extends HttpServlet {
             if ("delete".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 Album album = session.get(Album.class, id);
-                if (album != null) session.delete(album); // Каскадом удалит композиции
+                if (album != null) session.delete(album);
             }
 
             session.getTransaction().commit();

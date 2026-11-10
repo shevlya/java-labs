@@ -48,14 +48,12 @@ public class ArtistServlet extends HttpServlet {
                 int id = Integer.parseInt(request.getParameter("id"));
                 Artist artist = session.get(Artist.class, id);
                 if (artist != null) {
-                    // ЗДЕСЬ СРАБОТАЕТ КАСКАДНОЕ УДАЛЕНИЕ!
-                    // Hibernate сам удалит все альбомы и композиции этого артиста.
                     session.delete(artist);
                 }
             }
 
             session.getTransaction().commit();
-            response.sendRedirect("artists"); // Перезагрузка страницы после POST
+            response.sendRedirect("artists");
 
         } catch (Exception e) {
             if (session.getTransaction().isActive()) session.getTransaction().rollback();

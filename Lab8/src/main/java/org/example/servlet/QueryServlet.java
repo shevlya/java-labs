@@ -18,7 +18,7 @@ public class QueryServlet extends HttpServlet {
             throws ServletException, IOException {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            // ЗАПРОС 1 (3 таблицы): Все композиции с указанием альбома, жанра и исполнителя
+            // Запрос 1 (3 таблицы): Все композиции с указанием альбома, жанра и исполнителя
             List<Object[]> fullList = session.createQuery(
                             "select c.name, c.duration, a.name, a.genre, ar.name " +
                                     "from Composition c join c.album a join a.artist ar " +
@@ -26,7 +26,7 @@ public class QueryServlet extends HttpServlet {
                     .list();
             request.setAttribute("fullList", fullList);
 
-            // ЗАПРОС 2 (3 таблицы): Статистика по исполнителям
+            // Запрос 2 (3 таблицы): Статистика по исполнителям
             // Используем left join, чтобы показать даже тех исполнителей, у которых пока нет альбомов
             List<Object[]> stats = session.createQuery(
                             "select ar.name, count(distinct a.id), count(c.id), sum(c.duration) " +

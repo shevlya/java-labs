@@ -8,7 +8,6 @@ public class HibernateUtil {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            // Читает hibernate.cfg.xml из папки resources
             return new Configuration().configure().buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Ошибка инициализации SessionFactory: " + ex);

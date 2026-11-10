@@ -118,7 +118,6 @@
 </table>
 
 <script>
-    // Универсальная функция для подключения автодополнения
     function setupAutocomplete(inputId, listId) {
         const input = document.getElementById(inputId);
         const list = document.getElementById(listId);
@@ -126,26 +125,24 @@
 
         input.addEventListener("input", function () {
             const val = this.value.trim();
-            list.innerHTML = ''; // Очищаем старые подсказки
-            if (val.length < 1) return; // Начинаем искать только с 1 символа
+            list.innerHTML = '';
+            if (val.length < 1) return;
 
-            // Отправляем запрос на сервлет с параметром ?query=...
             fetch("autocomplete?query=" + encodeURIComponent(val))
                 .then(response => {
                     if (!response.ok) throw new Error("Network response was not ok");
                     return response.text();
                 })
                 .then(text => {
-                    console.log("Получен ответ от сервера:", text); // Для отладки в F12
+                    console.log("Получен ответ от сервера:", text);
                     if (!text) return;
 
-                    // Разбиваем ответ по переносу строки
                     text.split('\n').forEach(name => {
                         const div = document.createElement("div");
                         div.innerHTML = name;
                         div.addEventListener("click", function () {
                             input.value = this.innerHTML;
-                            list.innerHTML = ''; // Скрываем список после выбора
+                            list.innerHTML = '';
                         });
                         list.appendChild(div);
                     });
@@ -153,7 +150,6 @@
                 .catch(error => console.error("Ошибка AJAX:", error));
         });
 
-        // Закрыть список при клике в любом месте страницы, кроме поля ввода
         document.addEventListener("click", function (e) {
             if (e.target !== input) {
                 list.innerHTML = '';
@@ -161,16 +157,8 @@
         });
     }
 
-    // Инициализация для конкретных полей на страницах
-    // Для artists.jsp:
-    //setupAutocomplete("artistName", "autocomplete-list");
-
-    // Для albums.jsp (раскомментируйте, если файл albums.jsp):
     setupAutocomplete("albumName", "autocomplete-list-album");
     setupAutocomplete("artistName", "autocomplete-list-artist");
-
-    // Для compositions.jsp (раскомментируйте, если файл compositions.jsp):
-    // setupAutocomplete("albumName", "autocomplete-list");
 </script>
 </body>
 </html>

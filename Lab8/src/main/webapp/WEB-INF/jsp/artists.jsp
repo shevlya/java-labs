@@ -148,16 +148,7 @@
         });
     }
 
-    // Инициализация для конкретных полей на страницах
-    // Для artists.jsp:
     setupAutocomplete("artistName", "autocomplete-list");
-
-    // Для albums.jsp (раскомментируйте, если файл albums.jsp):
-    // setupAutocomplete("albumName", "autocomplete-list-album");
-    // setupAutocomplete("artistName", "autocomplete-list-artist");
-
-    // Для compositions.jsp (раскомментируйте, если файл compositions.jsp):
-    // setupAutocomplete("albumName", "autocomplete-list");
 </script>
 </body>
 </html>
