@@ -15,45 +15,42 @@ import java.util.List;
 public class AutocompleteServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String query = request.getParameter("query");
+        String queryText = request.getParameter("query");
+        String type = request.getParameter("type");
 
         response.setContentType("text/plain; charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        if (query == null || query.trim().isEmpty()) {
+        if (queryText == null || queryText.trim().isEmpty() || type == null) {
             return;
         }
 
-        String start = query.trim().toLowerCase();
-
+        String start = queryText.trim().toLowerCase();
         Session session = HibernateUtil.getSessionFactory().openSession();
+
         try {
-            List<String> artists = session.createQuery(
-                            "select a.name from Artist a where lower(a.name) like :prefix order by a.name", String.class)
-                    .setParameter("prefix", start + "%")
-                    .setMaxResults(10)
-                    .list();
-
-            List<String> albums = session.createQuery(
-                            "select a.name from Album a where lower(a.name) like :prefix order by a.name", String.class)
-                    .setParameter("prefix", start + "%")
-                    .setMaxResults(10)
-                    .list();
-
-            int count = 0;
-            for (String name : artists) {
-                if (count > 0) out.print("\n");
-                out.print(name);
-                count++;
+            List<String> results;
+            if ("artist".equalsIgnoreCase(type)) {
+                results = session.createQuery(
+                                "select a.name from Artist a where lower(a.name) like :prefix order by a.name", String.class)
+                        .setParameter("prefix", start + "%")
+                        .setMaxResults(10)
+                        .list();
+            } else if ("album".equalsIgnoreCase(type)) {
+                results = session.createQuery(
+                                "select a.name from Album a where lower(a.name) like :prefix order by a.name", String.class)
+                        .setParameter("prefix", start + "%")
+                        .setMaxResults(10)
+                        .list();
+            } else {
+                results = java.util.Collections.emptyList();
             }
 
-            for (String name : albums) {
-                if (!artists.contains(name)) {
-                    if (count > 0) out.print("\n");
-                    out.print(name);
-                    count++;
+            for (int i = 0; i < results.size(); i++) {
+                if (i > 0) {
+                    out.print("\n");
                 }
-                if (count >= 10) break;
+                out.print(results.get(i));
             }
 
         } finally {

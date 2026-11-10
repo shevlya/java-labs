@@ -1,0 +1,219 @@
+:root {
+    --color-bg: #f5f7fa;
+    --color-text: #333333;
+    --color-accent: #9b89b3;
+    --color-danger: #e74c3c;
+    --color-white: #ffffff;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    background: var(--color-bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14pt;
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+/* Контейнер для аккуратного центрирования контента */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--color-white);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+h1, h2, h3 {
+    color: var(--color-text);
+    margin-top: 0;
+}
+
+h2 {
+    border-bottom: 2px solid var(--color-accent);
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    font-size: 18pt;
+}
+
+/* Ссылки */
+a {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--color-text);
+}
+
+/* Формы и поля ввода */
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+    max-width: 400px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 12pt;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-accent);
+    border-radius: 6px;
+    font-size: 12pt;
+    box-sizing: border-box;
+    color: var(--color-text);
+    background: var(--color-white);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--color-text);
+    box-shadow: 0 0 0 3px rgba(155, 137, 179, 0.2);
+}
+
+/* Кнопки */
+button, .btn {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+    border: 1px solid var(--color-accent);
+    padding: 10px 24px;
+    font-size: 12pt;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: 10px;
+}
+
+button:hover, .btn:hover {
+    background-color: var(--color-white);
+    color: var(--color-accent);
+}
+
+.btn-danger {
+    background-color: transparent;
+    color: var(--color-danger);
+    border: none;
+    padding: 0;
+    font-size: 11pt;
+    text-decoration: underline;
+    margin: 0;
+}
+
+.btn-danger:hover {
+    background-color: transparent;
+    color: #c0392b;
+}
+
+/* Таблицы */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: var(--color-white);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+th {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* AJAX Автодополнение (Критически важно!) */
+.autocomplete-items {
+    position: absolute;
+    border: 1px solid var(--color-accent);
+    border-top: none;
+    z-index: 99;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    background: var(--color-white);
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #e0e0e0;
+    color: var(--color-text);
+}
+
+.autocomplete-items div:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-items div:hover {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+}
+
+/* Сообщения об ошибках */
+.error {
+    color: var(--color-danger);
+    font-weight: bold;
+    background-color: #fdecea;
+    padding: 12px;
+    border-radius: 6px;
+    border-left: 4px solid var(--color-danger);
+    margin-bottom: 20px;
+}
+
+/* Меню на главной странице */
+.menu {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.menu li a {
+    display: block;
+    padding: 15px 20px;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-accent);
+    border-radius: 8px;
+    color: var(--color-accent);
+    font-size: 14pt;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.menu li a:hover {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(155, 137, 179, 0.3);
+}

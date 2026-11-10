@@ -31,15 +31,44 @@ public class ArtistServlet extends HttpServlet {
 
             if ("add".equals(action)) {
                 String name = request.getParameter("name").trim();
-                if (name.isEmpty()) throw new Exception("Введите имя исполнителя");
+                if (name.isEmpty()) {
+                    throw new Exception("Введите имя исполнителя");
+                }
+
+                List<Artist> existingArtists = session.createQuery(
+                                "FROM Artist WHERE LOWER(name) = LOWER(:name)", Artist.class)
+                        .setParameter("name", name)
+                        .list();
+
+                if (!existingArtists.isEmpty()) {
+                    throw new Exception("Исполнитель с именем '" + name + "' уже существует!");
+                }
+
                 session.save(new Artist(name));
             }
 
             if ("update".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 String name = request.getParameter("name").trim();
+
                 Artist artist = session.get(Artist.class, id);
-                if (artist == null) throw new Exception("Исполнитель не найден");
+                if (artist == null) {
+                    throw new Exception("Исполнитель не найден");
+                }
+                if (name.isEmpty()) {
+                    throw new Exception("Введите имя исполнителя");
+                }
+
+                List<Artist> existingArtists = session.createQuery(
+                                "FROM Artist WHERE LOWER(name) = LOWER(:name) AND id != :id", Artist.class)
+                        .setParameter("name", name)
+                        .setParameter("id", id)
+                        .list();
+
+                if (!existingArtists.isEmpty()) {
+                    throw new Exception("Исполнитель с именем '" + name + "' уже существует!");
+                }
+
                 artist.setName(name);
                 session.update(artist);
             }
@@ -56,8 +85,10 @@ public class ArtistServlet extends HttpServlet {
             response.sendRedirect("artists");
 
         } catch (Exception e) {
-            if (session.getTransaction().isActive()) session.getTransaction().rollback();
-            request.setAttribute("error", "Ошибка: " + e.getMessage());
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            request.setAttribute("error", e.getMessage());
             showPage(request, response);
         } finally {
             session.close();
