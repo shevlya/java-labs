@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS composition;
+DROP TABLE IF EXISTS album;
+DROP TABLE IF EXISTS artist;
+
+DROP SEQUENCE IF EXISTS id_artist_seq;
+DROP SEQUENCE IF EXISTS id_album_seq;
+DROP SEQUENCE IF EXISTS id_composition_seq;
