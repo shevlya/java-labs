@@ -4,16 +4,14 @@
 <head>
     <title>Исполнители</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css">
+    <script src="${pageContext.request.contextPath}/autocomplete.js"></script>
 </head>
 <body>
 <div class="container">
     <h2><a href="${pageContext.request.contextPath}/">На главную</a> | Управление Исполнителями</h2>
+    <c:if test="${not empty error}"><p class="error">${error}</p></c:if>
 
-    <c:if test="${not empty error}">
-        <p class="error">${error}</p>
-    </c:if>
-
-    <form action="artists" method="post" class="edit-form">
+    <form action="artists" method="post">
         <c:choose>
             <c:when test="${empty editArtist}">
                 <h3>Добавить исполнителя</h3>
@@ -33,9 +31,7 @@
         </div>
 
         <button type="submit">Сохранить</button>
-        <c:if test="${not empty editArtist}">
-            <a href="artists" class="btn-cancel">Отмена</a>
-        </c:if>
+        <c:if test="${not empty editArtist}"><a href="artists" class="btn-cancel">Отмена</a></c:if>
     </form>
 
     <h3>Список исполнителей:</h3>
@@ -51,8 +47,8 @@
                 <td>${artist.name}</td>
                 <td>
                     <a href="artists?edit=${artist.id}">Изменить</a> |
-                    <form action="artists" method="post" style="display:inline;"
-                          onsubmit="return confirm('Удалить исполнителя и ВСЕ его альбомы и композиции (CASCADE)?');">
+                    <form action="artists" method="post" class="inline-form"
+                          onsubmit="return confirm('Удалить исполнителя и все его альбомы/композиции (CASCADE)?');">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="id" value="${artist.id}">
                         <button type="submit" class="btn-danger">Удалить</button>
@@ -64,42 +60,6 @@
 </div>
 
 <script>
-    function setupAutocomplete(inputId, listId, targetType) {
-        const input = document.getElementById(inputId);
-        const list = document.getElementById(listId);
-        if (!input || !list) return;
-
-        let timeoutId = null;
-        input.addEventListener("input", function () {
-            const val = this.value.trim();
-            list.innerHTML = '';
-            if (val.length < 2) return;
-            if (timeoutId) clearTimeout(timeoutId);
-
-            timeoutId = setTimeout(() => {
-                fetch("autocomplete?type=" + targetType + "&query=" + encodeURIComponent(val))
-                    .then(response => response.ok ? response.text() : Promise.reject("Network error"))
-                    .then(text => {
-                        if (!text) return;
-                        text.split('\n').forEach(name => {
-                            const div = document.createElement("div");
-                            div.innerHTML = name;
-                            div.addEventListener("click", function () {
-                                input.value = this.innerHTML;
-                                list.innerHTML = '';
-                            });
-                            list.appendChild(div);
-                        });
-                    })
-                    .catch(error => console.error("Ошибка AJAX:", error));
-            }, 400);
-        });
-
-        document.addEventListener("click", function (e) {
-            if (e.target !== input) list.innerHTML = '';
-        });
-    }
-
     setupAutocomplete("artistName", "autocomplete-list", "artist");
 </script>
 </body>

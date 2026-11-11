@@ -3,14 +3,13 @@
     --color-text: #333333;
     --color-accent: #9b89b3;
     --color-danger: #e74c3c;
-    --color-white: #ffffff;
 }
 
 body {
     margin: 0;
     padding: 20px;
     background: var(--color-bg);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: sans-serif;
     font-size: 14pt;
     color: var(--color-text);
     line-height: 1.6;
@@ -19,7 +18,6 @@ body {
 .container {
     max-width: 900px;
     margin: 0 auto;
-    background: var(--color-white);
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -70,7 +68,6 @@ input[type="number"] {
     font-size: 12pt;
     box-sizing: border-box;
     color: var(--color-text);
-    background: var(--color-white);
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -83,7 +80,7 @@ input[type="number"]:focus {
 
 button, .btn {
     background-color: var(--color-accent);
-    color: var(--color-white);
+    color: var(--color-text);
     border: 1px solid var(--color-accent);
     padding: 10px 24px;
     font-size: 12pt;
@@ -95,7 +92,7 @@ button, .btn {
 }
 
 button:hover, .btn:hover {
-    background-color: var(--color-white);
+    background-color: transparent;
     color: var(--color-accent);
 }
 
@@ -118,7 +115,6 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background: var(--color-white);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -131,7 +127,6 @@ th, td {
 
 th {
     background-color: var(--color-accent);
-    color: var(--color-white);
     font-weight: bold;
 }
 
@@ -139,7 +134,7 @@ tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-/* AJAX Автодополнение*/
+/* AJAX Автодополнение */
 .autocomplete-items {
     position: absolute;
     border: 1px solid var(--color-accent);
@@ -150,7 +145,6 @@ tr:nth-child(even) {
     right: 0;
     max-height: 150px;
     overflow-y: auto;
-    background: var(--color-white);
     border-radius: 0 0 6px 6px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -168,7 +162,6 @@ tr:nth-child(even) {
 
 .autocomplete-items div:hover {
     background-color: var(--color-accent);
-    color: var(--color-white);
 }
 
 .error {
@@ -194,7 +187,6 @@ tr:nth-child(even) {
 .menu li a {
     display: block;
     padding: 15px 20px;
-    background-color: var(--color-white);
     border: 1px solid var(--color-accent);
     border-radius: 8px;
     color: var(--color-accent);
@@ -205,7 +197,7 @@ tr:nth-child(even) {
 
 .menu li a:hover {
     background-color: var(--color-accent);
-    color: var(--color-white);
+    color: var(--color-text);
     text-decoration: none;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(155, 137, 179, 0.3);
@@ -216,4 +208,39 @@ tr:nth-child(even) {
     height: auto;
     margin-bottom: 20px;
     border-radius: 12px;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.btn-cancel {
+    margin-left: 15px;
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-cancel:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+}
+
+.search-form {
+    margin-bottom: 20px;
+    max-width: 400px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.search-form .form-group {
+    flex-grow: 1;
+    position: relative;
+    margin-bottom: 0;
+}
+
+.search-form button {
+    margin-bottom: 0;
+    margin-top: 24px;
 }

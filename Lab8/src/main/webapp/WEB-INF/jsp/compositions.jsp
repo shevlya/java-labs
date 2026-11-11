@@ -4,6 +4,7 @@
 <head>
     <title>Композиции</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css">
+    <script src="${pageContext.request.contextPath}/autocomplete.js"></script>
 </head>
 <body>
 <div class="container">
@@ -18,12 +19,10 @@
             <label>Название композиции:</label>
             <input type="text" name="name" value="${editComposition.name}" required>
         </div>
-
         <div class="form-group">
             <label>Длительность (мин):</label>
             <input type="number" name="duration" value="${editComposition.duration}" min="1" required>
         </div>
-
         <div class="form-group">
             <label>Альбом:</label>
             <input type="text" id="albumName" name="album"
@@ -33,7 +32,7 @@
         </div>
 
         <button type="submit">${not empty editComposition ? 'Обновить' : 'Добавить'}</button>
-        <c:if test="${not empty editComposition}"><a href="compositions" class="btn-cancel" style="margin-left: 15px;">Отмена</a></c:if>
+        <c:if test="${not empty editComposition}"><a href="compositions" class="btn-cancel">Отмена</a></c:if>
     </form>
 
     <h3>Список композиций:</h3>
@@ -53,7 +52,7 @@
                 <td>${comp.album.name}</td>
                 <td>
                     <a href="compositions?edit=${comp.id}">Изменить</a> |
-                    <form action="compositions" method="post" style="display:inline;"
+                    <form action="compositions" method="post" class="inline-form"
                           onsubmit="return confirm('Удалить эту композицию?');">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="id" value="${comp.id}">
@@ -66,52 +65,6 @@
 </div>
 
 <script>
-    function setupAutocomplete(inputId, listId, targetType) {
-        const input = document.getElementById(inputId);
-        const list = document.getElementById(listId);
-        if (!input || !list) return;
-
-        let timeoutId = null;
-
-        input.addEventListener("input", function () {
-            const val = this.value.trim();
-            list.innerHTML = '';
-
-            if (val.length < 2) return;
-
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-            }
-
-            timeoutId = setTimeout(() => {
-                fetch("autocomplete?type=" + targetType + "&query=" + encodeURIComponent(val))
-                    .then(response => {
-                        if (!response.ok) throw new Error("Network response was not ok");
-                        return response.text();
-                    })
-                    .then(text => {
-                        if (!text) return;
-                        text.split('\n').forEach(name => {
-                            const div = document.createElement("div");
-                            div.innerHTML = name;
-                            div.addEventListener("click", function () {
-                                input.value = this.innerHTML;
-                                list.innerHTML = '';
-                            });
-                            list.appendChild(div);
-                        });
-                    })
-                    .catch(error => console.error("Ошибка AJAX:", error));
-            }, 400);
-        });
-
-        document.addEventListener("click", function (e) {
-            if (e.target !== input) {
-                list.innerHTML = '';
-            }
-        });
-    }
-
     setupAutocomplete("albumName", "autocomplete-list", "album");
 </script>
 </body>
