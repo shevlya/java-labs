@@ -16,7 +16,6 @@ body {
     line-height: 1.6;
 }
 
-/* Контейнер для аккуратного центрирования контента */
 .container {
     max-width: 900px;
     margin: 0 auto;
@@ -38,7 +37,6 @@ h2 {
     font-size: 18pt;
 }
 
-/* Ссылки */
 a {
     color: var(--color-accent);
     text-decoration: none;
@@ -50,7 +48,6 @@ a:hover {
     color: var(--color-text);
 }
 
-/* Формы и поля ввода */
 .form-group {
     margin-bottom: 20px;
     position: relative;
@@ -84,7 +81,6 @@ input[type="number"]:focus {
     box-shadow: 0 0 0 3px rgba(155, 137, 179, 0.2);
 }
 
-/* Кнопки */
 button, .btn {
     background-color: var(--color-accent);
     color: var(--color-white);
@@ -118,7 +114,6 @@ button:hover, .btn:hover {
     color: #c0392b;
 }
 
-/* Таблицы */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -144,7 +139,7 @@ tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-/* AJAX Автодополнение (Критически важно!) */
+/* AJAX Автодополнение*/
 .autocomplete-items {
     position: absolute;
     border: 1px solid var(--color-accent);
@@ -176,7 +171,6 @@ tr:nth-child(even) {
     color: var(--color-white);
 }
 
-/* Сообщения об ошибках */
 .error {
     color: var(--color-danger);
     font-weight: bold;
@@ -187,7 +181,6 @@ tr:nth-child(even) {
     margin-bottom: 20px;
 }
 
-/* Меню на главной странице */
 .menu {
     list-style-type: none;
     padding: 0;

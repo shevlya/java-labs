@@ -56,22 +56,18 @@
         const list = document.getElementById(listId);
         if (!input || !list) return;
 
-        // Переменная для хранения идентификатора таймера
         let timeoutId = null;
 
         input.addEventListener("input", function () {
             const val = this.value.trim();
             list.innerHTML = '';
 
-            // 1. Не делаем запрос, если введено меньше 2 символов
             if (val.length < 2) return;
 
-            // 2. Если таймер уже запущен, отменяем его (пользователь продолжает печатать)
             if (timeoutId) {
                 clearTimeout(timeoutId);
             }
 
-            // 3. Запускаем новый таймер на 400 миллисекунд (0.4 секунды)
             timeoutId = setTimeout(() => {
                 fetch("autocomplete?type=" + targetType + "&query=" + encodeURIComponent(val))
                     .then(response => {
@@ -91,7 +87,7 @@
                         });
                     })
                     .catch(error => console.error("Ошибка AJAX:", error));
-            }, 400); // <-- Здесь задается задержка в миллисекундах
+            }, 400);
         });
 
         document.addEventListener("click", function (e) {
