@@ -212,9 +212,8 @@ tr:nth-child(even) {
 }
 
 .main-logo {
-    max-width: 250px; /* Ограничиваем максимальную ширину */
-    height: auto; /* Сохраняем пропорции */
-    margin-bottom: 20px; /* Отступ снизу до заголовка */
-    border-radius: 12px; /* Скругленные углы (если нужно) */
-    /* box-shadow: 0 4px 8px rgba(0,0,0,0.1); Можно добавить легкую тень */
+    max-width: 250px;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 12px;
 }
