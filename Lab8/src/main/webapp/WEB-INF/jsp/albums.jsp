@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container">
-    <h2><a href="index.jsp">← На главную</a> | Управление Альбомами</h2>
+    <h2><a href="index.jsp">На главную</a> | Управление Альбомами</h2>
     <c:if test="${not empty error}"><p class="error">${error}</p></c:if>
 
     <form action="albums" method="post">

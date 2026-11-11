@@ -6,6 +6,8 @@
 </head>
 <body>
 <div class="container" style="text-align: center;">
+    <img src="${pageContext.request.contextPath}/images/taskD.jpg" alt="Логотип Музыкального магазина"
+         class="main-logo">
     <h1>Музыкальный магазин</h1>
     <ul class="menu">
         <li><a href="artists">Исполнители</a></li>
