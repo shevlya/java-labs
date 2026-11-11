@@ -7,12 +7,24 @@
 </head>
 <body>
 <div class="container">
-    <h2><a href="index.jsp">На главную</a> | Управление Альбомами</h2>
-    <c:if test="${not empty error}"><p class="error">${error}</p></c:if>
+    <h2><a href="${pageContext.request.contextPath}/">На главную</a> | Управление Альбомами</h2>
+
+    <c:if test="${not empty error}">
+        <p class="error">${error}</p>
+    </c:if>
 
     <form action="albums" method="post">
-        <input type="hidden" name="action" value="${not empty editAlbum ? 'update' : 'add'}">
-        <c:if test="${not empty editAlbum}"><input type="hidden" name="id" value="${editAlbum.id}"></c:if>
+        <c:choose>
+            <c:when test="${empty editAlbum}">
+                <h3>Добавить альбом</h3>
+                <input type="hidden" name="action" value="add">
+            </c:when>
+            <c:otherwise>
+                <h3>Изменить альбом (ID: ${editAlbum.id})</h3>
+                <input type="hidden" name="action" value="update">
+                <input type="hidden" name="id" value="${editAlbum.id}">
+            </c:otherwise>
+        </c:choose>
 
         <div class="form-group">
             <label>Название альбома:</label>
@@ -32,8 +44,10 @@
             <div id="autocomplete-list-artist" class="autocomplete-items"></div>
         </div>
 
-        <button type="submit">${not empty editAlbum ? 'Обновить' : 'Добавить'}</button>
-        <c:if test="${not empty editAlbum}"><a href="albums" style="margin-left: 15px;">Отмена</a></c:if>
+        <button type="submit">Сохранить</button>
+        <c:if test="${not empty editAlbum}">
+            <a href="albums" class="btn-cancel" style="margin-left: 15px;">Отмена</a>
+        </c:if>
     </form>
 
     <h3>Список альбомов:</h3>
@@ -54,7 +68,7 @@
                 <td>
                     <a href="albums?edit=${album.id}">Изменить</a> |
                     <form action="albums" method="post" style="display:inline;"
-                          onsubmit="return confirm('Удалить альбом и ВСЕ его композиции (CASCADE)?');">
+                          onsubmit="return confirm('Удалить альбом и все его композиции?');">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="id" value="${album.id}">
                         <button type="submit" class="btn-danger">Удалить</button>
@@ -72,23 +86,15 @@
         if (!input || !list) return;
 
         let timeoutId = null;
-
         input.addEventListener("input", function () {
             const val = this.value.trim();
             list.innerHTML = '';
-
             if (val.length < 2) return;
-
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-            }
+            if (timeoutId) clearTimeout(timeoutId);
 
             timeoutId = setTimeout(() => {
                 fetch("autocomplete?type=" + targetType + "&query=" + encodeURIComponent(val))
-                    .then(response => {
-                        if (!response.ok) throw new Error("Network response was not ok");
-                        return response.text();
-                    })
+                    .then(response => response.ok ? response.text() : Promise.reject("Network error"))
                     .then(text => {
                         if (!text) return;
                         text.split('\n').forEach(name => {
@@ -106,9 +112,7 @@
         });
 
         document.addEventListener("click", function (e) {
-            if (e.target !== input) {
-                list.innerHTML = '';
-            }
+            if (e.target !== input) list.innerHTML = '';
         });
     }
 

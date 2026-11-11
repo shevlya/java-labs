@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container">
-    <h2><a href="index.jsp">На главную</a> | Управление Композициями</h2>
+    <h2><a href="${pageContext.request.contextPath}/">На главную</a> | Управление Композициями</h2>
     <c:if test="${not empty error}"><p class="error">${error}</p></c:if>
 
     <form action="compositions" method="post">
@@ -33,7 +33,7 @@
         </div>
 
         <button type="submit">${not empty editComposition ? 'Обновить' : 'Добавить'}</button>
-        <c:if test="${not empty editComposition}"><a href="compositions" style="margin-left: 15px;">Отмена</a></c:if>
+        <c:if test="${not empty editComposition}"><a href="compositions" class="btn-cancel" style="margin-left: 15px;">Отмена</a></c:if>
     </form>
 
     <h3>Список композиций:</h3>
@@ -53,7 +53,8 @@
                 <td>${comp.album.name}</td>
                 <td>
                     <a href="compositions?edit=${comp.id}">Изменить</a> |
-                    <form action="compositions" method="post" style="display:inline;">
+                    <form action="compositions" method="post" style="display:inline;"
+                          onsubmit="return confirm('Удалить эту композицию?');">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="id" value="${comp.id}">
                         <button type="submit" class="btn-danger">Удалить</button>
@@ -111,7 +112,7 @@
         });
     }
 
-    setupAutocomplete("albumName", "autocomplete-list-album", "album");
+    setupAutocomplete("albumName", "autocomplete-list", "album");
 </script>
 </body>
 </html>
