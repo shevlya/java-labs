@@ -7,13 +7,24 @@
 </head>
 <body>
 <div class="container">
-    <h2><a href="index.jsp">← На главную</a> | Управление Исполнителями</h2>
+    <h2><a href="${pageContext.request.contextPath}/">На главную</a> | Управление Исполнителями</h2>
 
-    <c:if test="${not empty error}"><p class="error">${error}</p></c:if>
+    <c:if test="${not empty error}">
+        <p class="error">${error}</p>
+    </c:if>
 
-    <form action="artists" method="post">
-        <input type="hidden" name="action" value="${not empty editArtist ? 'update' : 'add'}">
-        <c:if test="${not empty editArtist}"><input type="hidden" name="id" value="${editArtist.id}"></c:if>
+    <form action="artists" method="post" class="edit-form">
+        <c:choose>
+            <c:when test="${empty editArtist}">
+                <h3>Добавить исполнителя</h3>
+                <input type="hidden" name="action" value="add">
+            </c:when>
+            <c:otherwise>
+                <h3>Изменить исполнителя (ID: ${editArtist.id})</h3>
+                <input type="hidden" name="action" value="update">
+                <input type="hidden" name="id" value="${editArtist.id}">
+            </c:otherwise>
+        </c:choose>
 
         <div class="form-group">
             <label>Имя исполнителя:</label>
@@ -21,8 +32,10 @@
             <div id="autocomplete-list" class="autocomplete-items"></div>
         </div>
 
-        <button type="submit">${not empty editArtist ? 'Обновить' : 'Добавить'}</button>
-        <c:if test="${not empty editArtist}"><a href="artists" style="margin-left: 15px;">Отмена</a></c:if>
+        <button type="submit">Сохранить</button>
+        <c:if test="${not empty editArtist}">
+            <a href="artists" class="btn-cancel">Отмена</a>
+        </c:if>
     </form>
 
     <h3>Список исполнителей:</h3>
@@ -57,23 +70,15 @@
         if (!input || !list) return;
 
         let timeoutId = null;
-
         input.addEventListener("input", function () {
             const val = this.value.trim();
             list.innerHTML = '';
-
             if (val.length < 2) return;
-
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-            }
+            if (timeoutId) clearTimeout(timeoutId);
 
             timeoutId = setTimeout(() => {
                 fetch("autocomplete?type=" + targetType + "&query=" + encodeURIComponent(val))
-                    .then(response => {
-                        if (!response.ok) throw new Error("Network response was not ok");
-                        return response.text();
-                    })
+                    .then(response => response.ok ? response.text() : Promise.reject("Network error"))
                     .then(text => {
                         if (!text) return;
                         text.split('\n').forEach(name => {
@@ -91,13 +96,11 @@
         });
 
         document.addEventListener("click", function (e) {
-            if (e.target !== input) {
-                list.innerHTML = '';
-            }
+            if (e.target !== input) list.innerHTML = '';
         });
     }
 
-    setupAutocomplete("artistName", "autocomplete-list-artist", "artist");
+    setupAutocomplete("artistName", "autocomplete-list", "artist");
 </script>
 </body>
 </html>
