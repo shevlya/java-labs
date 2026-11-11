@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-    <h2><a href="${pageContext.request.contextPath}/">На главную</a> | Управление Исполнителями</h2>
+    <h2><a href="${pageContext.request.contextPath}/">На главную</a></h2>
     <c:if test="${not empty error}"><p class="error">${error}</p></c:if>
 
     <form action="artists" method="post">

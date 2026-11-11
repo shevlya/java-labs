@@ -2,20 +2,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Сложные запросы</title>
+    <title>Запросы</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css">
     <script src="${pageContext.request.contextPath}/autocomplete.js"></script>
 </head>
 <body>
 <div class="container">
-    <h2><a href="${pageContext.request.contextPath}/">На главную</a> | Сложные запросы (Задание 3)</h2>
+    <h2>
+        <a href="${pageContext.request.contextPath}/">На главную</a>
+    </h2>
 
     <h3>Композиции конкретного исполнителя</h3>
     <form action="queries" method="get" class="search-form">
         <div class="form-group">
             <label for="artistSearch">Введите имя исполнителя:</label>
             <input type="text" id="artistSearch" name="artist" value="${param.artist}" autocomplete="off"
-                   placeholder="Например: Bach">
+                   placeholder="Например: Бах">
             <div id="autocomplete-list-query" class="autocomplete-items"></div>
         </div>
         <button type="submit">Показать</button>

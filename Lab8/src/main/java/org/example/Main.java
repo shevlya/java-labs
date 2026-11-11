@@ -54,11 +54,11 @@ public class Main {
 
         session.beginTransaction();
 
-        Artist telemann = saveArtist(session, "Георг Филипп Телеман");
-        Artist bach = saveArtist(session, "Иоганн Себастьян Бах");
-        Artist mozart = saveArtist(session, "Вольфганг Амадей Моцарт");
-        Artist beethoven = saveArtist(session, "Людвиг ван Бетховен");
-        Artist vivaldi = saveArtist(session, "Антонио Вивальди");
+        Artist telemann = saveArtist(session, "Телеман Георг Филипп");
+        Artist bach = saveArtist(session, "Бах Иоганн Себастьян");
+        Artist mozart = saveArtist(session, "Моцарт Вольфганг Амадей");
+        Artist beethoven = saveArtist(session, "Бетховен Людвиг");
+        Artist vivaldi = saveArtist(session, "Вивальди Антонио ");
 
         Album tafelMusic = saveAlbum(session, "Tafelmusik", "Барокко", telemann);
         Album brandenburg = saveAlbum(session, "Бранденбургские концерты", "Барокко", bach);
