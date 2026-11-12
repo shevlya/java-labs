@@ -17,7 +17,7 @@ function setupAutocomplete(inputId, listId, targetType, contextPath) {
             xhr.abort();
             xhr = null;
         }
-        if (val.length < 2) return;
+        if (val.length < 1) return;
 
         timeoutId = setTimeout(() => {
             const request = new XMLHttpRequest();

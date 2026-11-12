@@ -18,21 +18,17 @@ public class AlbumServlet extends BaseServlet {
     private static final String HQL_ARTIST_BY_NAME = "from Artist where name = :name";
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         showPage(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String action = param(request, "action");
         Session session = openSession();
-
         try {
             session.beginTransaction();
-
             if ("add".equals(action) || "update".equals(action)) {
                 String name = param(request, "name");
                 String genre = param(request, "genre");
@@ -79,8 +75,7 @@ public class AlbumServlet extends BaseServlet {
                 .uniqueResult();
     }
 
-    private void showPage(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void showPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Session session = openSession();
         try {
             request.setAttribute("albums", session.createQuery(HQL_ALL, Album.class).list());

@@ -11,8 +11,7 @@
     <h2>Запросы</h2>
     <%@ include file="menu.jspf" %>
 
-    <h3>Запрос 1. Композиции конкретного исполнителя</h3>
-    <p class="hint-text">Таблицы: composition + album + artist</p>
+    <h3>Композиции конкретного исполнителя</h3>
 
     <form action="queries" method="get" class="search-form">
         <div class="form-group">
@@ -54,8 +53,7 @@
 
     <hr class="divider">
 
-    <h3>Запрос 2. Статистика по исполнителям</h3>
-    <p class="hint-text">Таблицы: artist + album + composition</p>
+    <h3>Статистика по исполнителям</h3>
     <table>
         <tr>
             <th>Исполнитель</th>
