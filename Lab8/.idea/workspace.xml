@@ -6,26 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="a90af2e7-5fd8-4635-87d5-d45d45cd9a18" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.smarttomcat/Lab8/conf/catalina.policy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.smarttomcat/Lab8/conf/catalina.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.smarttomcat/Lab8/conf/context.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.smarttomcat/Lab8/conf/jaspic-providers.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.smarttomcat/Lab8/conf/jaspic-providers.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.smarttomcat/Lab8/conf/logging.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.smarttomcat/Lab8/conf/server.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.smarttomcat/Lab8/conf/tomcat-users.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.smarttomcat/Lab8/conf/tomcat-users.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.smarttomcat/Lab8/conf/web.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lab8.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Lab8.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/lab6.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/lab6.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entity/Album.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entity/Album.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entity/Artist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entity/Artist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entity/Composition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entity/Composition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/util/HibernateInitListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/util/HibernateInitListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/util/HibernateUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/util/HibernateUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/albums.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/albums.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +69,7 @@
       <recent name="D:\uni\master\1 semster\Java\Lab8\src\main\webapp\WEB-INF\images" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Smart Tomcat.Tomcat: Lab8">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
       <module name="Lab8" />
@@ -155,7 +137,7 @@
       <workItem from="1794412565068" duration="12889000" />
       <workItem from="1794427384587" duration="100000" />
       <workItem from="1794427506732" duration="241000" />
-      <workItem from="1794427776061" duration="6071000" />
+      <workItem from="1794427776061" duration="6411000" />
     </task>
     <servers />
   </component>
