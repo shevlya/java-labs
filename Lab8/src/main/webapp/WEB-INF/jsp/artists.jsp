@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" errorPage="error.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
@@ -8,8 +8,10 @@
 </head>
 <body>
 <div class="container">
-    <h2><a href="${pageContext.request.contextPath}/">На главную</a></h2>
-    <c:if test="${not empty error}"><p class="error">${error}</p></c:if>
+    <h2>Исполнители</h2>
+    <%@ include file="menu.jspf" %>
+
+    <c:if test="${not empty error}"><p class="error"><c:out value="${error}"/></p></c:if>
 
     <form action="artists" method="post">
         <c:choose>
@@ -25,8 +27,9 @@
         </c:choose>
 
         <div class="form-group">
-            <label>Имя исполнителя:</label>
-            <input type="text" id="artistName" name="name" value="${editArtist.name}" autocomplete="off" required>
+            <label for="artistName">Имя исполнителя:</label>
+            <input type="text" id="artistName" name="name"
+                   value="<c:out value='${editArtist.name}'/>" autocomplete="off" required>
             <div id="autocomplete-list" class="autocomplete-items"></div>
         </div>
 
@@ -44,11 +47,11 @@
         <c:forEach var="artist" items="${artists}">
             <tr>
                 <td>${artist.id}</td>
-                <td>${artist.name}</td>
+                <td><c:out value="${artist.name}"/></td>
                 <td>
                     <a href="artists?edit=${artist.id}">Изменить</a> |
                     <form action="artists" method="post" class="inline-form"
-                          onsubmit="return confirm('Удалить исполнителя и все его альбомы/композиции (CASCADE)?');">
+                          onsubmit="return confirm('Удалить исполнителя вместе со всеми его альбомами и композициями?');">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="id" value="${artist.id}">
                         <button type="submit" class="btn-danger">Удалить</button>
@@ -60,7 +63,7 @@
 </div>
 
 <script>
-    setupAutocomplete("artistName", "autocomplete-list", "artist");
+    setupAutocomplete("artistName", "autocomplete-list", "artist", "${pageContext.request.contextPath}");
 </script>
 </body>
 </html>

@@ -1,0 +1,8 @@
+<%@ page pageEncoding="UTF-8" %>
+<p class="menu-line">
+    <a href="${pageContext.request.contextPath}/">Главная</a> |
+    <a href="${pageContext.request.contextPath}/artists">Исполнители</a> |
+    <a href="${pageContext.request.contextPath}/albums">Альбомы</a> |
+    <a href="${pageContext.request.contextPath}/compositions">Композиции</a> |
+    <a href="${pageContext.request.contextPath}/queries">Запросы</a>
+</p>

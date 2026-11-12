@@ -134,7 +134,6 @@ tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-/* AJAX Автодополнение */
 .autocomplete-items {
     position: absolute;
     border: 1px solid var(--color-accent);
@@ -244,4 +243,33 @@ tr:nth-child(even) {
 .search-form button {
     margin-bottom: 0;
     margin-top: 24px;
+}
+
+.container {
+    background: #ffffff;
+}
+
+.autocomplete-items:empty {
+    display: none;
+}
+
+.menu-line {
+    margin: 0 0 25px;
+    font-size: 12pt;
+}
+
+.hint-text {
+    font-size: 11pt;
+    color: #666666;
+    margin: 0 0 15px;
+}
+
+.divider {
+    margin: 40px 0;
+    border: 0;
+    border-top: 1px solid #ddd;
+}
+
+.main-page {
+    text-align: center;
 }

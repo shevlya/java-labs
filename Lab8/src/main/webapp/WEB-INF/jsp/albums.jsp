@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" errorPage="error.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
@@ -8,8 +8,10 @@
 </head>
 <body>
 <div class="container">
-    <h2><a href="${pageContext.request.contextPath}/">На главную</a></h2>
-    <c:if test="${not empty error}"><p class="error">${error}</p></c:if>
+    <h2>Альбомы</h2>
+    <%@ include file="menu.jspf" %>
+
+    <c:if test="${not empty error}"><p class="error"><c:out value="${error}"/></p></c:if>
 
     <form action="albums" method="post">
         <c:choose>
@@ -25,18 +27,19 @@
         </c:choose>
 
         <div class="form-group">
-            <label>Название альбома:</label>
-            <input type="text" id="albumName" name="name" value="${editAlbum.name}" autocomplete="off" required>
+            <label for="albumName">Название альбома:</label>
+            <input type="text" id="albumName" name="name"
+                   value="<c:out value='${editAlbum.name}'/>" autocomplete="off" required>
             <div id="autocomplete-list-album" class="autocomplete-items"></div>
         </div>
         <div class="form-group">
-            <label>Жанр:</label>
-            <input type="text" name="genre" value="${editAlbum.genre}" required>
+            <label for="genre">Жанр:</label>
+            <input type="text" id="genre" name="genre" value="<c:out value='${editAlbum.genre}'/>" required>
         </div>
         <div class="form-group">
-            <label>Исполнитель:</label>
+            <label for="artistName">Исполнитель:</label>
             <input type="text" id="artistName" name="artist"
-                   value="${editAlbum.artist != null ? editAlbum.artist.name : ''}" autocomplete="off" required>
+                   value="<c:out value='${editAlbum.artist.name}'/>" autocomplete="off" required>
             <div id="autocomplete-list-artist" class="autocomplete-items"></div>
         </div>
 
@@ -56,9 +59,9 @@
         <c:forEach var="album" items="${albums}">
             <tr>
                 <td>${album.id}</td>
-                <td>${album.name}</td>
-                <td>${album.genre}</td>
-                <td>${album.artist.name}</td>
+                <td><c:out value="${album.name}"/></td>
+                <td><c:out value="${album.genre}"/></td>
+                <td><c:out value="${album.artist.name}"/></td>
                 <td>
                     <a href="albums?edit=${album.id}">Изменить</a> |
                     <form action="albums" method="post" class="inline-form"
@@ -74,8 +77,8 @@
 </div>
 
 <script>
-    setupAutocomplete("albumName", "autocomplete-list-album", "album");
-    setupAutocomplete("artistName", "autocomplete-list-artist", "artist");
+    setupAutocomplete("albumName", "autocomplete-list-album", "album", "${pageContext.request.contextPath}");
+    setupAutocomplete("artistName", "autocomplete-list-artist", "artist", "${pageContext.request.contextPath}");
 </script>
 </body>
 </html>
