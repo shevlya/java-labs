@@ -5,9 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>laba8</artifactId>
+    <artifactId>Lab8</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <!-- war - веб-приложение, которое запускается в Tomcat -->
     <packaging>war</packaging>
 
     <properties>
@@ -17,29 +16,24 @@
     </properties>
 
     <dependencies>
-        <!-- драйвер PostgreSQL (как в лабе 6) -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.13</version>
         </dependency>
 
-        <!-- Hibernate (версия 5 - с пакетом javax.persistence, как в лекции) -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.6.15.Final</version>
         </dependency>
 
-        <!-- более новая версия библиотеки, которую Hibernate использует внутри
-             (нужна, чтобы Hibernate 5 работал на новых версиях Java) -->
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
             <version>1.14.18</version>
         </dependency>
 
-        <!-- сервлеты: provided - их даёт сам Tomcat -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -47,7 +41,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- JSTL - теги <c:forEach>, <c:if> и др. -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
@@ -56,7 +49,7 @@
     </dependencies>
 
     <build>
-        <finalName>laba8</finalName>
+        <finalName>Lab8</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

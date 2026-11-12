@@ -8,7 +8,8 @@ import java.util.List;
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "album_seq")
-    @SequenceGenerator(name = "album_seq", sequenceName = "album_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "album_seq", sequenceName = "id_album_seq", allocationSize = 1)
+    @Column(name = "album_id")
     private Integer id;
 
     @Column(name = "album_name", nullable = false)
@@ -30,6 +31,12 @@ public class Album {
     public Album(String name, String genre) {
         this.name = name;
         this.genre = genre;
+    }
+
+    public Album(String name, String genre, Artist artist) {
+        this.name = name;
+        this.genre = genre;
+        this.artist = artist;
     }
 
     public Integer getId() {

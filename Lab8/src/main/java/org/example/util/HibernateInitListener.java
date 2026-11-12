@@ -9,14 +9,19 @@ public class HibernateInitListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("Инициализация Hibernate при старте сервера");
-        HibernateUtil.getSessionFactory();
-        System.out.println("Hibernate инициализирован");
+        sce.getServletContext().log("Инициализация Hibernate при старте приложения");
+        try {
+            HibernateUtil.getSessionFactory();
+            sce.getServletContext().log("Hibernate инициализирован: схема БД проверена (hbm2ddl.auto=validate)");
+        } catch (RuntimeException e) {
+            sce.getServletContext().log("Не удалось инициализировать Hibernate", e);
+            throw e;
+        }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        System.out.println("Закрытие Hibernate");
+        sce.getServletContext().log("Закрытие SessionFactory Hibernate");
         HibernateUtil.shutdown();
     }
 }

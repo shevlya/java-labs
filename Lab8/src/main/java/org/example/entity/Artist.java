@@ -8,7 +8,8 @@ import java.util.List;
 public class Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artist_seq")
-    @SequenceGenerator(name = "artist_seq", sequenceName = "artist_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "artist_seq", sequenceName = "id_artist_seq", allocationSize = 1)
+    @Column(name = "artist_id")
     private Integer id;
 
     @Column(name = "artist_name", nullable = false, unique = true)

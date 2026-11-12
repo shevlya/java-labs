@@ -7,7 +7,8 @@ import javax.persistence.*;
 public class Composition {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comp_seq")
-    @SequenceGenerator(name = "comp_seq", sequenceName = "composition_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "comp_seq", sequenceName = "id_composition_seq", allocationSize = 1)
+    @Column(name = "composition_id")
     private Integer id;
 
     @Column(name = "composition_name", nullable = false)
@@ -26,6 +27,12 @@ public class Composition {
     public Composition(String name, Integer duration) {
         this.name = name;
         this.duration = duration;
+    }
+
+    public Composition(String name, Integer duration, Album album) {
+        this.name = name;
+        this.duration = duration;
+        this.album = album;
     }
 
     public Integer getId() {
