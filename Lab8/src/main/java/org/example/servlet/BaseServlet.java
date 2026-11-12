@@ -26,7 +26,7 @@ public abstract class BaseServlet extends HttpServlet {
         try {
             return Integer.parseInt(param(request, name));
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Некорректное значение параметра ' + name + '");
+            throw new IllegalArgumentException("Некорректное значение параметра " + name);
         }
     }
 
