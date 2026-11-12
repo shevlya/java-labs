@@ -14,6 +14,7 @@
     <c:if test="${not empty error}"><p class="error"><c:out value="${error}"/></p></c:if>
 
     <form action="compositions" method="post">
+        <h3>Добавить композицию</h3>
         <input type="hidden" name="action" value="${not empty editComposition ? 'update' : 'add'}">
         <c:if test="${not empty editComposition}">
             <input type="hidden" name="id" value="${editComposition.id}">
