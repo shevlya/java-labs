@@ -2,75 +2,70 @@ package org.example.servlet;
 
 import org.example.entity.Album;
 import org.example.entity.Artist;
-import org.example.util.HibernateUtil;
 import org.hibernate.Session;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/albums")
-public class AlbumServlet extends HttpServlet {
+public class AlbumServlet extends BaseServlet {
 
+    private static final String PAGE = "albums.jsp";
+    private static final String HQL_ALL = "from Album order by id";
+    private static final String HQL_ARTIST_BY_NAME = "from Artist where name = :name";
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         showPage(request, response);
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String action = request.getParameter("action");
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        String action = param(request, "action");
+        Session session = openSession();
 
         try {
             session.beginTransaction();
 
             if ("add".equals(action) || "update".equals(action)) {
-                String name = request.getParameter("name").trim();
-                String genre = request.getParameter("genre").trim();
-                String artistName = request.getParameter("artist").trim();
-
+                String name = param(request, "name");
+                String genre = param(request, "genre");
+                String artistName = param(request, "artist");
                 if (name.isEmpty() || genre.isEmpty() || artistName.isEmpty()) {
                     throw new Exception("Заполните все поля");
                 }
-
                 Artist artist = findArtist(session, artistName);
                 if (artist == null) {
-                    throw new Exception("Исполнитель «" + artistName + "» не найден в БД");
+                    throw new Exception("Исполнитель " + artistName + " не найден в БД");
                 }
-
                 if ("add".equals(action)) {
-                    Album album = new Album(name, genre);
-                    album.setArtist(artist);
-                    session.save(album);
+                    session.save(new Album(name, genre, artist));
                 } else {
-                    int id = Integer.parseInt(request.getParameter("id"));
-                    Album album = session.get(Album.class, id);
-                    if (album == null) throw new Exception("Альбом не найден");
+                    Album album = session.get(Album.class, intParam(request, "id"));
+                    if (album == null) {
+                        throw new Exception("Альбом не найден");
+                    }
                     album.setName(name);
                     album.setGenre(genre);
                     album.setArtist(artist);
-                    session.update(album);
                 }
             }
-
             if ("delete".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                Album album = session.get(Album.class, id);
-                if (album != null) session.delete(album);
+                Album album = session.get(Album.class, intParam(request, "id"));
+                if (album != null) {
+                    session.delete(album);
+                }
             }
-
             session.getTransaction().commit();
             response.sendRedirect("albums");
-
         } catch (Exception e) {
-            if (session.getTransaction().isActive()) session.getTransaction().rollback();
-            request.setAttribute("error", "Ошибка: " + e.getMessage());
+            rollbackWithError(session, request, e);
             showPage(request, response);
         } finally {
             session.close();
@@ -78,23 +73,21 @@ public class AlbumServlet extends HttpServlet {
     }
 
     private Artist findArtist(Session session, String name) {
-        List<Artist> list = session.createQuery("from Artist where name = :name", Artist.class)
-                .setParameter("name", name).list();
-        return list.isEmpty() ? null : list.get(0);
+        return session.createQuery(HQL_ARTIST_BY_NAME, Artist.class)
+                .setParameter("name", name)
+                .setMaxResults(1)
+                .uniqueResult();
     }
 
     private void showPage(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = openSession();
         try {
-            List<Album> albums = session.createQuery("from Album order by id", Album.class).list();
-            request.setAttribute("albums", albums);
-
-            String edit = request.getParameter("edit");
-            if (edit != null) {
-                request.setAttribute("editAlbum", session.get(Album.class, Integer.parseInt(edit)));
+            request.setAttribute("albums", session.createQuery(HQL_ALL, Album.class).list());
+            if (!param(request, "edit").isEmpty()) {
+                request.setAttribute("editAlbum", session.get(Album.class, intParam(request, "edit")));
             }
-            request.getRequestDispatcher("/WEB-INF/jsp/albums.jsp").forward(request, response);
+            forward(request, response, PAGE);
         } finally {
             session.close();
         }
